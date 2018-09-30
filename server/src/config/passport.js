@@ -4,7 +4,7 @@ import { Strategy as BearerStrategy } from 'passport-http-bearer';
 import Table from '../table';
 import { encode, decode } from '../utils/tokens';
 
-let usersTable = new Table('Users');
+let authorsTable = new Table('Authors');
 let tokensTable = new Table('Tokens');
 
 function configurePassport(app) {
@@ -16,10 +16,11 @@ function configurePassport(app) {
         try {
             // array destructuring. find() will return an array of results.
             // destructuring the first (and hopefully only) result into the user variable
-            let [user] = await usersTable.find({ email });
-            if (user && user.password && user.password === password) {
+            let [author] = await authorsTable.find({ email });
+            console.log(await author);
+            if (author && author.password && author.password === password) {
                 let idObj = await tokensTable.insert({
-                    userid: user.id
+                    authorid: author.id
                 });
                 let token = encode(idObj.id);
                 return done(null, { token });
@@ -38,10 +39,12 @@ function configurePassport(app) {
         }
         try {
             let tokenRecord = await tokensTable.getOne(tokenId);
-            let user = await usersTable.getOne(tokenRecord.userid);
-            if (user) {
-                delete user.password;
-                return done(null, user);
+            console.log(tokenRecord);
+            let author = await authorsTable.getOne(tokenRecord.authorid);
+            console.log(author);
+            if (author) {
+                delete author.password;
+                return done(null, author);
             } else {
                 return done(null, false, { message: 'Invalid token' });
             }
