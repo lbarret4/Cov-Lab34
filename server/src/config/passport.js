@@ -17,7 +17,6 @@ function configurePassport(app) {
             // array destructuring. find() will return an array of results.
             // destructuring the first (and hopefully only) result into the user variable
             let [author] = await authorsTable.find({ email });
-            console.log(await author);
             if (author && author.password && author.password === password) {
                 let idObj = await tokensTable.insert({
                     authorid: author.id
@@ -39,9 +38,7 @@ function configurePassport(app) {
         }
         try {
             let tokenRecord = await tokensTable.getOne(tokenId);
-            console.log(tokenRecord);
             let author = await authorsTable.getOne(tokenRecord.authorid);
-            console.log(author);
             if (author) {
                 delete author.password;
                 return done(null, author);
