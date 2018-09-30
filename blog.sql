@@ -12,6 +12,7 @@ CREATE TABLE authors
     id INT NOT NULL auto_increment PRIMARY KEY,
     name VARCHAR(60) NOT NULL,
     email VARCHAR(254) NOT NULL,
+    password VARCHAR(45) NOT NULL,
     _created DATETIME DEFAULT CURRENT_TIMESTAMP
 
 );
@@ -40,6 +41,17 @@ CREATE TABLE blogtags
         ON DELETE CASCADE
 );
 
+CREATE TABLE tokens
+(
+    id INT NOT NULL auto_increment,
+    authorid INT NOT NULL,
+  PRIMARY KEY (id, authorid),
+ CONSTRAINT authorid_fk
+    FOREIGN KEY (authorid)
+    REFERENCES authors(id)
+
+);
+
 INSERT INTO blogs(title, content,_created)
 VALUES('Blog Title 1','Words Words Words .Words .Words .Words. Words. Words .Words Words Words Words .Words','2018-09-18 09:38:32'),
 ('Blog Title 2','Words Words Words .Words .Words .Words. Words. Words .Words Words Words Words .Words','2018-09-19 09:38:33'),
@@ -47,17 +59,17 @@ VALUES('Blog Title 1','Words Words Words .Words .Words .Words. Words. Words .Wor
 ('Blog Title 4','Words Words Words .Words .Words .Words. Words. Words .Words Words Words Words .Words','2018-09-21 09:38:35'),
 ('Blog Title 5','Words Words Words .Words .Words .Words. Words. Words .Words Words Words Words .Words','2018-09-24 09:38:36');
 
-INSERT INTO authors(name,email)
-VALUES  ('Charles','test1@test.com'),
-        ('Jemma','test2@test.com'),
-        ('Kim','test3@test.com'),
-        ('Amanda','test4@test.com'),
-        ('Kenji','test5@test.com'),
-        ('John','test6@test.com'),
-        ('Candice','test7@test.com'),
-        ('Robert','test8@test.com'),
-        ('Tina','test9@test.com'),
-        ('Patricia','test10@test.com');
+INSERT INTO authors(name,email,password)
+VALUES  ('Charles','test1@test.com','********'),
+        ('Jemma','test2@test.com','********'),
+        ('Kim','test3@test.com','********'),
+        ('Amanda','test4@test.com','********'),
+        ('Kenji','test5@test.com','********'),
+        ('John','test6@test.com','********'),
+        ('Candice','test7@test.com','********'),
+        ('Robert','test8@test.com','********'),
+        ('Tina','test9@test.com','********'),
+        ('Patricia','test10@test.com','********');
 
 INSERT INTO tags(name)
 VALUES  ('food'),      
